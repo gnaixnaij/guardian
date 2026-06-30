@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian — Free EDR Dashboard</title>
+  <style>
+    :root { --bg:#0d1117; --bg-card:#161b22; --text:#e6edf3; --text-muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --orange:#d29922; --red:#f85149; --border:#30363d; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,sans-serif; background:var(--bg); color:var(--text); }
+    header { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--border); }
+    header h1 { font-size:1.3em; }
+    .sub { color:var(--text-muted); font-size:0.8em; }
+    main { max-width:1100px; margin:0 auto; padding:24px; }
+    .stats { display:flex; gap:12px; margin-bottom:24px; flex-wrap:wrap; }
+    .stat { flex:1; min-width:120px; padding:16px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; text-align:center; }
+    .stat .num { font-size:1.5em; font-weight:700; }
+    .stat .lbl { font-size:0.8em; color:var(--text-muted); margin-top:2px; }
+    .stat.high .num { color:var(--red); }
+    .stat.medium .num { color:var(--orange); }
+    .stat.info .num { color:var(--accent); }
+    .alert { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:8px; }
+    .alert-header { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .sev { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.7em; font-weight:600; text-transform:uppercase; }
+    .sev-high { background:#f8514922; color:var(--red); }
+    .sev-medium { background:#d2992222; color:var(--orange); }
+    .sev-low { background:#8b949e22; color:var(--text-muted); }
+    .sev-info { background:#58a6ff22; color:var(--accent); }
+    .alert-rule { font-weight:600; font-size:0.9em; }
+    .alert-detail { font-family:monospace; font-size:0.78em; color:var(--text-muted); margin-top:6px; overflow:hidden; text-overflow:ellipsis; }
+    .alert-time { color:var(--text-muted); font-size:0.78em; margin-left:auto; }
+    .empty { text-align:center; padding:40px; color:var(--text-muted); }
+    .footer { text-align:center; padding:20px; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85em; }
+    @media (max-width:640px) { .stats { flex-direction:column; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div><h1>🛡️ Guardian</h1><div class="sub">Free EDR Dashboard</div></div>
+    <span id="status" style="font-size:0.8em;color:var(--green)">● Live</span>
+  </header>
+  <main>
+    <div class="stats" id="stats"></div>
+    <h2 style="font-size:1em;margin-bottom:12px">Recent Alerts</h2>
+    <div id="alerts"><div class="empty">Waiting for alerts...</div></div>
+  </main>
+  <div class="footer"><a href="https://github.com/gnaixnaij/guardian" style="color:var(--accent)">GitHub</a> · <a href="https://ko-fi.com/gnaixnaij" style="color:var(--accent)">Sponsor</a></div>
+  <script>
+    async function refresh() {
+      try {
+        const [statsR, alertsR] = await Promise.all([
+          fetch("/api/stats").then(r=>r.json()),
+          fetch("/api/alerts").then(r=>r.json())
+        ]);
+        renderStats(statsR);
+        renderAlerts(alertsR);
+      } catch {}
+    }
+    function renderStats(s) {
+      document.getElementById("stats").innerHTML = `
+        <div class="stat"><div class="num">${s.processes||0}</div><div class="lbl">Processes</div></div>
+        <div class="stat"><div class="num">${s.connections||0}</div><div class="lbl">Connections</div></div>
+        <div class="stat high"><div class="num">${s.high_alerts||0}</div><div class="lbl">High Alerts</div></div>
+        <div class="stat info"><div class="num">${s.total_alerts||0}</div><div class="lbl">Total Alerts</div></div>
+      `;
+    }
+    function renderAlerts(alerts) {
+      const container = document.getElementById("alerts");
+      if (!alerts.length) { container.innerHTML = '<div class="empty">✅ No alerts yet</div>'; return; }
+      container.innerHTML = alerts.slice(-50).reverse().map(a => {
+        const sev = a.severity || "info";
+        const detail = a.event ? (a.event.name || a.event.path || a.event.cmdline || "") : "";
+        const time = a.time || a.event?.time || "";
+        return `<div class="alert">
+          <div class="alert-header">
+            <span class="sev sev-${sev}">${sev}</span>
+            <span class="alert-rule">${a.rule_name || a.type || "Alert"}</span>
+            <span class="alert-time">${time.slice(11,19) || ""}</span>
+          </div>
+          <div class="alert-detail">${detail.slice(0,200)}</div>
+        </div>`;
+      }).join("");
+    }
+    refresh();
+    setInterval(refresh, 3000);
+  </script>
+</body>
+</html>
