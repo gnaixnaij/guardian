@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guardian — Free Lightweight EDR</title>
+  <meta name="description" content="Free lightweight EDR for teams who can't afford commercial endpoint detection. Monitor processes, files, and network. YAML rules, web dashboard.">
+  <meta property="og:title" content="Guardian — Free Lightweight EDR">
+  <meta property="og:description" content="Free lightweight EDR for small teams. Process, file, and network monitoring with YAML detection rules and web dashboard.">
+  <meta property="og:type" content="website">
+  <style>
+    :root { --bg:#0d1117; --bg-card:#161b22; --text:#e6edf3; --text-muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --orange:#d29922; --red:#f85149; --border:#30363d; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    .container { max-width:900px; margin:0 auto; padding:40px 20px; }
+    h1 { font-size:2.2em; margin-bottom:4px; }
+    .sub { color:var(--text-muted); font-size:1.1em; margin-bottom:24px; }
+    .badges { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:30px; }
+    .badges a img { height:24px; }
+    .hero { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:30px; margin-bottom:30px; text-align:center; }
+    .hero h2 { font-size:1.3em; margin-bottom:8px; color:var(--green); }
+    .hero p { color:var(--text-muted); max-width:500px; margin:0 auto; }
+    .features { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:30px; }
+    .feature { flex:1; min-width:200px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:18px; }
+    .feature .icon { font-size:1.3em; margin-bottom:6px; }
+    .feature h3 { font-size:0.95em; margin-bottom:4px; }
+    .feature p { font-size:0.85em; color:var(--text-muted); }
+    .card { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:20px; margin-bottom:16px; }
+    .card h3 { margin-bottom:8px; }
+    .card p, .card li { color:var(--text-muted); font-size:0.9em; }
+    .card ul { padding-left:20px; }
+    .card li { margin-bottom:4px; }
+    pre { background:#1c2333; padding:14px; border-radius:6px; overflow-x:auto; font-size:0.85em; margin:10px 0; font-family:'JetBrains Mono',monospace; }
+    code { background:#1c2333; padding:2px 6px; border-radius:3px; font-size:0.85em; }
+    .grid { display:flex; flex-wrap:wrap; gap:12px; }
+    .grid .card { flex:1; min-width:180px; }
+    .detect-item { display:flex; align-items:center; gap:8px; padding:5px 0; }
+    .detect-item::before { content:"✓"; color:var(--green); font-weight:bold; }
+    .install-cmd { display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#1c2333; padding:14px; border-radius:8px; margin:12px 0; }
+    .install-cmd code { flex:1; background:transparent; padding:0; font-size:0.9em; }
+    .copy-btn { padding:6px 14px; background:var(--accent); color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:0.8em; }
+    a { color:var(--accent); }
+    footer { text-align:center; padding:24px; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85em; margin-top:40px; }
+    .rules-grid { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+    .rule-tag { display:inline-block; padding:4px 12px; border-radius:4px; font-size:0.78em; background:var(--bg-card); border:1px solid var(--border); }
+    .rule-tag.high { border-color:var(--red); color:var(--red); }
+    .rule-tag.medium { border-color:var(--orange); color:var(--orange); }
+    @media (max-width:640px) { h1 { font-size:1.6em; } .features { flex-direction:column; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+      <div>
+        <h1>🛡️ Guardian</h1>
+        <p class="sub">Free lightweight EDR for teams who can't afford commercial endpoint detection</p>
+      </div>
+      <div class="badges">
+        <a href="https://github.com/gnaixnaij/guardian"><img src="https://img.shields.io/github/stars/gnaixnaij/guardian?style=flat-square" alt="Stars"></a>
+        <a href="https://ko-fi.com/gnaixnaij"><img src="https://img.shields.io/badge/Sponsor-Ko--fi-FF5E5B?style=flat-square&logo=ko-fi" alt="Sponsor"></a>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h2>⚡ One command to start monitoring</h2>
+      <p>Python agent that watches processes, files, and network. Web dashboard included. No cloud, no subscription, no data leaving your network.</p>
+      <div class="install-cmd">
+        <code>pip install psutil flask pyyaml && wget -O guardian.py https://git.io/guardian-edr && python guardian.py</code>
+        <button class="copy-btn" onclick="navigator.clipboard.writeText('pip install psutil flask pyyaml && wget -O guardian.py https://git.io/guardian-edr && python guardian.py')">📋 Copy</button>
+      </div>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="icon">🔍</div>
+        <h3>Process Monitoring</h3>
+        <p>Detects new processes, flags suspicious tooling in real-time. PowerShell encoded commands, Mimikatz, BloodHound, and more.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📁</div>
+        <h3>File Monitoring</h3>
+        <p>Watches temp directories and sensitive paths for new files created by attackers during post-exploitation.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🌐</div>
+        <h3>Network Visibility</h3>
+        <p>Tracks active outbound connections. See what processes are phoning home to C2 infrastructure.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📊</div>
+        <h3>Web Dashboard</h3>
+        <p>Real-time alert dashboard in your browser. Filter by severity, inspect details, export findings.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>🔍 Built-in detection rules</h3>
+      <div class="rules-grid">
+        <span class="rule-tag high">Mimikatz</span>
+        <span class="rule-tag high">BloodHound</span>
+        <span class="rule-tag high">CrackMapExec</span>
+        <span class="rule-tag high">PowerShell -enc</span>
+        <span class="rule-tag high">PowerShell IEX</span>
+        <span class="rule-tag high">AMSI Bypass</span>
+        <span class="rule-tag medium">curl/wget downloads</span>
+        <span class="rule-tag medium">certutil.exe</span>
+        <span class="rule-tag medium">bitsadmin</span>
+        <span class="rule-tag medium">New files in /tmp</span>
+        <span class="rule-tag low">Process exits</span>
+      </div>
+      <p style="margin-top:10px;font-size:0.85em;color:var(--text-muted)">Add custom YAML rules in <code>detector/rules/</code> — no code changes needed.</p>
+    </div>
+
+    <div class="card">
+      <h3>📖 Usage</h3>
+      <pre># Run with dashboard
+python guardian.py
+
+# Run headless (no web UI, for servers)
+python guardian.py --headless
+
+# Specify port
+python guardian.py --port 8080
+
+# Run for 60 seconds then exit (test mode)
+python guardian.py --duration 60</pre>
+    </div>
+
+    <div class="card">
+      <h3>🚨 When to use Guardian</h3>
+      <ul>
+        <li>You're a solo consultant or small MSSP — can't justify $10k/yr for EDR seats</li>
+        <li>You need quick triage on a可疑 host — run Guardian, check the dashboard, find anomalies</li>
+        <li>You're learning incident response — Guardian shows you what EDR telemetry looks like</li>
+        <li>You want to monitor a lab environment — no license, no restrictions</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>📦 Requirements</h3>
+      <ul>
+        <li>Python 3.8+</li>
+        <li>Linux or Windows</li>
+        <li><code>psutil</code> for process/network monitoring</li>
+        <li><code>flask</code> for web dashboard</li>
+        <li>No internet required — everything runs locally</li>
+      </ul>
+    </div>
+  </div>
+  <footer>
+    <a href="https://github.com/gnaixnaij/guardian">GitHub</a> · <a href="https://ko-fi.com/gnaixnaij">Sponsor</a> ·
+    Built by <a href="https://github.com/gnaixnaij">gnaixnaij</a> for small teams who need EDR
+  </footer>
+</body>
+</html>
