@@ -4,69 +4,85 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guardian — Free Lightweight EDR</title>
-  <meta name="description" content="Free lightweight EDR for teams who can't afford commercial endpoint detection. Monitor processes, files, and network. YAML rules, web dashboard.">
+  <meta name="description" content="Free lightweight EDR for teams who can't afford commercial endpoint detection. Monitor processes, files, network. YAML detection rules, web dashboard.">
   <meta property="og:title" content="Guardian — Free Lightweight EDR">
   <meta property="og:description" content="Free lightweight EDR for small teams. Process, file, and network monitoring with YAML detection rules and web dashboard.">
-  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root { --bg:#0d1117; --bg-card:#161b22; --text:#e6edf3; --text-muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --orange:#d29922; --red:#f85149; --border:#30363d; }
+    :root { --bg:#0d1117; --bg-card:#161b22; --bg-code:#1c2333; --text:#e6edf3; --text-muted:#8b949e; --accent:#58a6ff; --green:#3fb950; --orange:#d29922; --red:#f85149; --border:#30363d; }
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
-    .container { max-width:900px; margin:0 auto; padding:40px 20px; }
-    h1 { font-size:2.2em; margin-bottom:4px; }
-    .sub { color:var(--text-muted); font-size:1.1em; margin-bottom:24px; }
-    .badges { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:30px; }
-    .badges a img { height:24px; }
-    .hero { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:30px; margin-bottom:30px; text-align:center; }
-    .hero h2 { font-size:1.3em; margin-bottom:8px; color:var(--green); }
-    .hero p { color:var(--text-muted); max-width:500px; margin:0 auto; }
-    .features { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:30px; }
-    .feature { flex:1; min-width:200px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:18px; }
-    .feature .icon { font-size:1.3em; margin-bottom:6px; }
-    .feature h3 { font-size:0.95em; margin-bottom:4px; }
-    .feature p { font-size:0.85em; color:var(--text-muted); }
-    .card { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:20px; margin-bottom:16px; }
-    .card h3 { margin-bottom:8px; }
+    body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; -webkit-font-smoothing:antialiased; }
+    .container { max-width:960px; margin:0 auto; padding:0 24px; }
+    nav { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--border); }
+    nav h1 { font-size:1.15em; font-weight:600; }
+    nav .sub { color:var(--text-muted); font-size:0.78em; }
+    nav .links { display:flex; gap:8px; }
+    nav .links a { padding:7px 16px; border-radius:6px; font-size:0.85em; font-weight:500; transition:all .2s; }
+    nav .links .btn-primary { background:var(--green); color:#fff; border:1px solid var(--green); }
+    nav .links .btn-primary:hover { background:#2ea043; text-decoration:none; }
+    nav .links .btn-secondary { background:var(--bg-card); color:var(--text); border:1px solid var(--border); }
+    nav .links .btn-secondary:hover { background:var(--bg-code); text-decoration:none; }
+
+    .hero { text-align:center; padding:60px 20px 40px; }
+    .hero h1 { font-size:2.4em; font-weight:800; letter-spacing:-0.02em; margin-bottom:10px; }
+    .hero h1 span { color:var(--green); }
+    .hero p { color:var(--text-muted); font-size:1.1em; max-width:650px; margin:0 auto 28px; }
+    .hero .badges { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+    .hero .badges img { height:24px; }
+    .hero .install-code { display:flex; align-items:center; gap:8px; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:12px 16px; max-width:650px; margin:20px auto 0; }
+    .hero .install-code code { flex:1; background:none; padding:0; font-size:0.82em; }
+    .hero .install-code button { padding:6px 14px; background:var(--accent); color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:0.8em; font-weight:500; }
+
+    .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:40px 0; }
+    .feature { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px; transition:border-color .2s; }
+    .feature:hover { border-color:var(--accent); }
+    .feature .icon { font-size:1.5em; margin-bottom:10px; }
+    .feature h3 { font-size:1em; margin-bottom:4px; }
+    .feature p { font-size:0.88em; color:var(--text-muted); line-height:1.5; }
+
+    .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px; margin-bottom:20px; }
+    .card h2 { font-size:1.05em; margin-bottom:14px; display:flex; align-items:center; gap:8px; }
     .card p, .card li { color:var(--text-muted); font-size:0.9em; }
     .card ul { padding-left:20px; }
-    .card li { margin-bottom:4px; }
-    pre { background:#1c2333; padding:14px; border-radius:6px; overflow-x:auto; font-size:0.85em; margin:10px 0; font-family:'JetBrains Mono',monospace; }
-    code { background:#1c2333; padding:2px 6px; border-radius:3px; font-size:0.85em; }
-    .grid { display:flex; flex-wrap:wrap; gap:12px; }
-    .grid .card { flex:1; min-width:180px; }
-    .detect-item { display:flex; align-items:center; gap:8px; padding:5px 0; }
-    .detect-item::before { content:"✓"; color:var(--green); font-weight:bold; }
-    .install-cmd { display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#1c2333; padding:14px; border-radius:8px; margin:12px 0; }
-    .install-cmd code { flex:1; background:transparent; padding:0; font-size:0.9em; }
-    .copy-btn { padding:6px 14px; background:var(--accent); color:#fff; border:none; border-radius:4px; cursor:pointer; font-size:0.8em; }
+    .card li { margin-bottom:5px; }
+    code { background:var(--bg-code); padding:2px 7px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:0.85em; }
+    pre { background:var(--bg-code); padding:16px; border-radius:8px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:0.82em; line-height:1.5; margin:12px 0; border:1px solid var(--border); }
+
+    .rules { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+    .rule { display:inline-block; padding:5px 14px; border-radius:6px; font-size:0.82em; font-weight:500; background:var(--bg-card); border:1px solid var(--border); }
+    .rule.high { border-color:var(--red); color:var(--red); }
+    .rule.medium { border-color:var(--orange); color:var(--orange); }
+    .rule.low { border-color:var(--text-muted); color:var(--text-muted); }
+
+    .section-title { font-size:1.2em; font-weight:700; margin:40px 0 16px; }
     a { color:var(--accent); }
-    footer { text-align:center; padding:24px; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85em; margin-top:40px; }
-    .rules-grid { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
-    .rule-tag { display:inline-block; padding:4px 12px; border-radius:4px; font-size:0.78em; background:var(--bg-card); border:1px solid var(--border); }
-    .rule-tag.high { border-color:var(--red); color:var(--red); }
-    .rule-tag.medium { border-color:var(--orange); color:var(--orange); }
-    @media (max-width:640px) { h1 { font-size:1.6em; } .features { flex-direction:column; } }
+    footer { text-align:center; padding:28px 24px; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.85em; margin-top:40px; }
+
+    @media (max-width:640px) { .hero h1 { font-size:1.6em; } .features { grid-template-columns:1fr; } .hero .install-code { flex-direction:column; } }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
-      <div>
-        <h1>🛡️ Guardian</h1>
-        <p class="sub">Free lightweight EDR for teams who can't afford commercial endpoint detection</p>
-      </div>
-      <div class="badges">
-        <a href="https://github.com/gnaixnaij/guardian"><img src="https://img.shields.io/github/stars/gnaixnaij/guardian?style=flat-square" alt="Stars"></a>
-        <a href="https://ko-fi.com/gnaixnaij"><img src="https://img.shields.io/badge/Sponsor-Ko--fi-FF5E5B?style=flat-square&logo=ko-fi" alt="Sponsor"></a>
-      </div>
+  <nav>
+    <div><h1>🛡️ Guardian</h1><div class="sub">Free lightweight EDR</div></div>
+    <div class="links">
+      <a href="https://github.com/gnaixnaij/guardian" class="btn-secondary">GitHub</a>
+      <a href="https://ko-fi.com/gnaixnaij" class="btn-primary">Sponsor</a>
     </div>
+  </nav>
 
+  <div class="container">
     <div class="hero">
-      <h2>⚡ One command to start monitoring</h2>
-      <p>Python agent that watches processes, files, and network. Web dashboard included. No cloud, no subscription, no data leaving your network.</p>
-      <div class="install-cmd">
-        <code>pip install psutil flask pyyaml && wget -O guardian.py https://git.io/guardian-edr && python guardian.py</code>
-        <button class="copy-btn" onclick="navigator.clipboard.writeText('pip install psutil flask pyyaml && wget -O guardian.py https://git.io/guardian-edr && python guardian.py')">📋 Copy</button>
+      <h1>Free <span>endpoint detection</span><br>for small teams</h1>
+      <p>Monitor processes, files, and network connections in real-time. YAML-based detection rules. Web dashboard included. No cloud, no subscription, no data leaving your network.</p>
+      <div class="badges">
+        <img src="https://img.shields.io/github/stars/gnaixnaij/guardian?style=flat-square" alt="Stars">
+        <img src="https://img.shields.io/github/license/gnaixnaij/guardian?style=flat-square" alt="License">
+        <img src="https://img.shields.io/badge/python-3.8+-3776AB?style=flat-square&logo=python" alt="Python">
+      </div>
+      <div class="install-code">
+        <code>pip install psutil flask pyyaml && python guardian.py</code>
+        <button onclick="navigator.clipboard.writeText('pip install psutil flask pyyaml && python guardian.py')">📋 Copy</button>
       </div>
     </div>
 
@@ -74,82 +90,76 @@
       <div class="feature">
         <div class="icon">🔍</div>
         <h3>Process Monitoring</h3>
-        <p>Detects new processes, flags suspicious tooling in real-time. PowerShell encoded commands, Mimikatz, BloodHound, and more.</p>
+        <p>Detects new processes in real-time. Flags suspicious tooling — Mimikatz, BloodHound, PowerShell encoded commands, and more.</p>
       </div>
       <div class="feature">
         <div class="icon">📁</div>
         <h3>File Monitoring</h3>
-        <p>Watches temp directories and sensitive paths for new files created by attackers during post-exploitation.</p>
+        <p>Watches temp directories and sensitive paths for files created during post-exploitation activity.</p>
       </div>
       <div class="feature">
         <div class="icon">🌐</div>
         <h3>Network Visibility</h3>
-        <p>Tracks active outbound connections. See what processes are phoning home to C2 infrastructure.</p>
+        <p>Tracks active outbound connections. See which processes are phoning home to C2 infrastructure.</p>
       </div>
       <div class="feature">
         <div class="icon">📊</div>
         <h3>Web Dashboard</h3>
-        <p>Real-time alert dashboard in your browser. Filter by severity, inspect details, export findings.</p>
+        <p>Real-time alert dashboard in your browser. Filter by severity, inspect alert details, export findings.</p>
       </div>
     </div>
 
+    <h2 class="section-title">Built-in detection</h2>
     <div class="card">
-      <h3>🔍 Built-in detection rules</h3>
-      <div class="rules-grid">
-        <span class="rule-tag high">Mimikatz</span>
-        <span class="rule-tag high">BloodHound</span>
-        <span class="rule-tag high">CrackMapExec</span>
-        <span class="rule-tag high">PowerShell -enc</span>
-        <span class="rule-tag high">PowerShell IEX</span>
-        <span class="rule-tag high">AMSI Bypass</span>
-        <span class="rule-tag medium">curl/wget downloads</span>
-        <span class="rule-tag medium">certutil.exe</span>
-        <span class="rule-tag medium">bitsadmin</span>
-        <span class="rule-tag medium">New files in /tmp</span>
-        <span class="rule-tag low">Process exits</span>
+      <div class="rules">
+        <span class="rule high">Mimikatz</span>
+        <span class="rule high">BloodHound</span>
+        <span class="rule high">CrackMapExec</span>
+        <span class="rule high">PowerShell -enc</span>
+        <span class="rule high">PowerShell IEX</span>
+        <span class="rule high">AMSI Bypass</span>
+        <span class="rule medium">curl / wget</span>
+        <span class="rule medium">certutil.exe</span>
+        <span class="rule medium">bitsadmin</span>
+        <span class="rule medium">New files in /tmp</span>
       </div>
-      <p style="margin-top:10px;font-size:0.85em;color:var(--text-muted)">Add custom YAML rules in <code>detector/rules/</code> — no code changes needed.</p>
+      <p style="margin-top:12px;color:var(--text-muted);font-size:0.85em">Add custom YAML rules in <code>detector/rules/</code> — no code changes needed.</p>
     </div>
 
+    <h2 class="section-title">Usage</h2>
     <div class="card">
-      <h3>📖 Usage</h3>
-      <pre># Run with dashboard
+      <pre># Run with dashboard (default)
 python guardian.py
 
-# Run headless (no web UI, for servers)
+# Run headless (servers)
 python guardian.py --headless
 
-# Specify port
+# Custom dashboard port
 python guardian.py --port 8080
 
-# Run for 60 seconds then exit (test mode)
+# Run for 60 seconds then exit (test)
 python guardian.py --duration 60</pre>
     </div>
 
+    <h2 class="section-title">Quick install</h2>
     <div class="card">
-      <h3>🚨 When to use Guardian</h3>
-      <ul>
-        <li>You're a solo consultant or small MSSP — can't justify $10k/yr for EDR seats</li>
-        <li>You need quick triage on a可疑 host — run Guardian, check the dashboard, find anomalies</li>
-        <li>You're learning incident response — Guardian shows you what EDR telemetry looks like</li>
-        <li>You want to monitor a lab environment — no license, no restrictions</li>
-      </ul>
+      <pre>curl -sL https://raw.githubusercontent.com/gnaixnaij/guardian/main/install.sh | bash</pre>
+      <p style="color:var(--text-muted);font-size:0.85em;margin-top:8px">Installs dependencies, downloads Guardian, and shows next steps.</p>
     </div>
 
+    <h2 class="section-title">When to use Guardian</h2>
     <div class="card">
-      <h3>📦 Requirements</h3>
       <ul>
-        <li>Python 3.8+</li>
-        <li>Linux or Windows</li>
-        <li><code>psutil</code> for process/network monitoring</li>
-        <li><code>flask</code> for web dashboard</li>
-        <li>No internet required — everything runs locally</li>
+        <li>You're a solo consultant or small MSSP — can't justify EDR seat costs</li>
+        <li>Quick triage on a suspicious host — run Guardian, check the dashboard, find anomalies</li>
+        <li>Learning incident response — Guardian shows what EDR telemetry looks like</li>
+        <li>Monitoring a lab environment — no license, no restrictions</li>
       </ul>
     </div>
   </div>
+
   <footer>
-    <a href="https://github.com/gnaixnaij/guardian">GitHub</a> · <a href="https://ko-fi.com/gnaixnaij">Sponsor</a> ·
-    Built by <a href="https://github.com/gnaixnaij">gnaixnaij</a> for small teams who need EDR
+    <a href="https://github.com/gnaixnaij/guardian">GitHub</a> · <a href="https://ko-fi.com/gnaixnaij">Sponsor</a> · Built by <a href="https://github.com/gnaixnaij">gnaixnaij</a>
   </footer>
 </body>
 </html>
